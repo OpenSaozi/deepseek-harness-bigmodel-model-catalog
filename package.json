@@ -1,0 +1,45 @@
+{
+  "name": "@deepseek-ai/dsh-model-catalog-bigmodel",
+  "description": "Live BigModel Coding Plan model catalog plugin for the DeepSeek Harness pi-ai adapter",
+  "version": "0.1.0-rc.5",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": { "types": "./lib/types/index.d.ts", "default": "./lib/index.js" },
+    "./invariant": { "types": "./lib/types/invariant.d.ts", "default": "./lib/invariant.js" },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": ["lib/index.js", "lib/invariant.js", "lib/types/**/*.d.ts"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog.git"
+  },
+  "homepage": "https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog#readme",
+  "bugs": { "url": "https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog/issues" },
+  "keywords": [
+    "deepseek-harness",
+    "zhipu-ai",
+    "bigmodel",
+    "glm",
+    "glm-5",
+    "coding-plan",
+    "model-catalog",
+    "pi-ai",
+    "llm"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/dsh-invariants": "workspace:^",
+    "@deepseek-ai/dsh-llm-pi-ai": "workspace:^",
+    "@deepseek-ai/cordis": "workspace:^"
+  },
+  "dependencies": { "@earendil-works/pi-ai": "^0.82.1" },
+  "devDependencies": {
+    "@deepseek-ai/dsh-invariants": "workspace:^",
+    "@deepseek-ai/dsh-llm-pi-ai": "workspace:^",
+    "@deepseek-ai/cordis": "workspace:^"
+  }
+}
