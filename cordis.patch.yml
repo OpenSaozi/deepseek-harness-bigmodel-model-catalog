@@ -1,0 +1,3 @@
+- insert:
+    - id: model-catalog-bigmodel
+      name: '@deepseek-ai/dsh-model-catalog-bigmodel'

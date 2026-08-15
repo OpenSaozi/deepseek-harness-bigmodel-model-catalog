@@ -11,13 +11,17 @@
 - 受管凭据留在 DeepSeek Harness；插件只收到不含凭据的模型列表响应。
 - 只改变模型发现：不修改提示词、兼容请求头、Token 计算或推理传输。
 
-## 源码集成
+## 安装
 
-本仓库目前是供匹配版本的 DeepSeek Harness 检出目录使用的源码分发，不是可独立安装的 npm 发布包。请将它放在 `packages/llm/model-catalog-bigmodel`，加入宿主 TypeScript 引用和基础 bundle 依赖，然后在 bundle 的 Cordis 配置中注册：
+请把经过评审的提交安装进一个 DeepSeek Harness profile。仓库携带 `dsh.bundle` patch 和预构建运行文件，因此通过 Git 安装时无需授权包构建：
+
+```sh
+dsh plugin --profile <profile> add github:OpenSaozi/deepseek-harness-bigmodel-model-catalog#<commit-sha>
+```
+
+安装后的组合包会贡献下面的清单配置；profile 的基础 bundle 已经提供 `llm-pi-ai`：
 
 ```yaml
-- id: llm-pi-ai
-  name: '@deepseek-ai/dsh-llm-pi-ai'
 - id: model-catalog-bigmodel
   name: '@deepseek-ai/dsh-model-catalog-bigmodel'
 ```

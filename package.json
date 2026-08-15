@@ -12,7 +12,8 @@
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "files": ["lib/index.js", "lib/invariant.js", "lib/types/**/*.d.ts"],
+  "files": ["lib/**/*.js", "lib/**/*.d.ts", "src/**/*.ts", "cordis.patch.yml"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
   "license": "MIT",
   "repository": {
     "type": "git",

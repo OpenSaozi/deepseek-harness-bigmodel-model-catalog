@@ -11,13 +11,17 @@ English | [中文](README.zh.md)
 - Keeps the managed credential in DeepSeek Harness; the plugin receives only a credential-free model-list response.
 - Changes model discovery only: no prompt text, compatibility header, token accounting, or inference transport is modified.
 
-## Source Integration
+## Installation
 
-This repository is currently a source distribution for a matching DeepSeek Harness checkout, not an independently installable npm release. Place it at `packages/llm/model-catalog-bigmodel`, add it to the host TypeScript references and base bundle dependencies, then register it in the bundle's Cordis configuration:
+Install a reviewed commit into a DeepSeek Harness profile. The repository carries a `dsh.bundle` patch and prebuilt runtime files, so Git installation needs no package build permission:
+
+```sh
+dsh plugin --profile <profile> add github:OpenSaozi/deepseek-harness-bigmodel-model-catalog#<commit-sha>
+```
+
+The installed bundle contributes the catalog row below; the profile's base bundle already supplies `llm-pi-ai`:
 
 ```yaml
-- id: llm-pi-ai
-  name: '@deepseek-ai/dsh-llm-pi-ai'
 - id: model-catalog-bigmodel
   name: '@deepseek-ai/dsh-model-catalog-bigmodel'
 ```
