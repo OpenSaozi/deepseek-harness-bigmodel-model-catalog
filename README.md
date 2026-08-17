@@ -6,7 +6,7 @@ English | [中文](README.zh.md)
 
 ## Highlights
 
-- Maintains reviewed descriptors for `glm-4.5`, `glm-4.6`, `glm-5`, and `glm-5.3`.
+- Maintains reviewed descriptors for `glm-4.5`, `glm-4.6`, `glm-5`, and the 1M-context, 128K-output `glm-5.3`.
 - Reconciles the live provider response with an explicit, directly verified `glm-5.3` exception.
 - Keeps the managed credential in DeepSeek Harness; the plugin receives only a credential-free model-list response.
 - Changes model discovery only: no prompt text, compatibility header, token accounting, or inference transport is modified.
@@ -56,4 +56,4 @@ No direct effect. Selecting a different model may change provider-side cache eli
 
 - Refresh runs on mount and after route-setting or managed-credential changes. Failure keeps the maintained catalog and logs the error.
 - The Coding Plan Models endpoint currently omits a directly callable `glm-5.3`; that exact id is an explicit verified exception.
-- The endpoint supplies ids, not complete capability metadata. Descriptor changes still require verification and a package update.
+- The endpoint supplies ids, not complete capability metadata. Context and output capacities therefore come from the reviewed descriptor table and remain pinned by package tests.

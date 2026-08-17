@@ -35,15 +35,29 @@ function textModel(id: string, name: string, contextWindow: number, maxTokens: n
   }
 }
 
+interface MaintainedTextModel {
+  readonly id: string
+  readonly name: string
+  readonly contextWindow: number
+  readonly maxTokens: number
+}
+
+const MAINTAINED_TEXT_MODELS = [
+  { id: 'glm-4.5', name: 'GLM-4.5', contextWindow: 131_072, maxTokens: 98_304 },
+  { id: 'glm-4.6', name: 'GLM-4.6', contextWindow: 204_800, maxTokens: 131_072 },
+  { id: 'glm-5', name: 'GLM-5', contextWindow: 200_000, maxTokens: 131_072 },
+  { id: 'glm-5.3', name: 'GLM-5.3', contextWindow: 1_000_000, maxTokens: 131_072 },
+] as const satisfies readonly MaintainedTextModel[]
+
 /** Maintained descriptors plus models live-verified ahead of pi-ai's catalog. */
 export const maintainedModels: readonly Model<Api>[] = appendMissing(
   getBuiltinModels(PROVIDER),
-  [
-    textModel('glm-4.5', 'GLM-4.5', 131_072, 98_304),
-    textModel('glm-4.6', 'GLM-4.6', 204_800, 131_072),
-    textModel('glm-5', 'GLM-5', 200_000, 131_072),
-    textModel('glm-5.3', 'GLM-5.3', 200_000, 131_072),
-  ],
+  MAINTAINED_TEXT_MODELS.map(model => textModel(
+    model.id,
+    model.name,
+    model.contextWindow,
+    model.maxTokens,
+  )),
 )
 
 /** Models proven by a direct completion may remain even when `/models` lags. */
