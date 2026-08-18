@@ -1,6 +1,6 @@
 {
   "name": "@deepseek-ai/dsh-model-catalog-bigmodel",
-  "description": "Live BigModel Coding Plan model catalog plugin for the DeepSeek Harness pi-ai adapter",
+  "description": "Zhipu AI BigModel and GLM Coding Plan LLM Provider model catalog plugin for DeepSeek Harness",
   "version": "0.1.0-rc.5",
   "private": true,
   "type": "module",
@@ -9,6 +9,7 @@
   "exports": {
     ".": { "types": "./lib/types/index.d.ts", "default": "./lib/index.js" },
     "./invariant": { "types": "./lib/types/invariant.d.ts", "default": "./lib/invariant.js" },
+    "./cordis.patch.yml": "./cordis.patch.yml",
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
@@ -22,12 +23,16 @@
   "homepage": "https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog#readme",
   "bugs": { "url": "https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog/issues" },
   "keywords": [
+    "deepseek",
     "deepseek-harness",
+    "dsh-plugin",
+    "llm-provider",
+    "coding-plan",
     "zhipu-ai",
     "bigmodel",
     "glm",
     "glm-5",
-    "coding-plan",
+    "glm-5.3",
     "model-catalog",
     "pi-ai",
     "llm"

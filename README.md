@@ -1,44 +1,48 @@
-# DeepSeek Harness BigModel / GLM Model Catalog
+# DSH Plugin: LLM Provider - BigModel GLM
 
 English | [中文](README.zh.md)
 
-`@deepseek-ai/dsh-model-catalog-bigmodel` is a live Zhipu AI BigModel / GLM Coding Plan model catalog plugin for [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) and its pi-ai adapter. It queries the exact `https://api.z.ai/api/coding/paas/v4/models` endpoint through the host, without exposing the Coding Plan key to the plugin.
+Allows connecting to the **Zhipu AI BigModel / GLM** Coding Plan as an LLM Provider, enabling [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) to utilize the dedicated Coding Plan route and unlocking the verified **1M-token context model `glm-5.3`** (along with `glm-4.5`, `glm-4.6`, and `glm-5`).
 
-## Highlights
+## Target Audience and Use Cases
 
-- Maintains reviewed descriptors for `glm-4.5`, `glm-4.6`, `glm-5`, and the 1M-context, 128K-output `glm-5.3`.
-- Reconciles the live provider response with an explicit, directly verified `glm-5.3` exception.
-- Keeps the managed credential in DeepSeek Harness; the plugin receives only a credential-free model-list response.
-- Changes model discovery only: no prompt text, compatibility header, token accounting, or inference transport is modified.
+Designed for developers with a Zhipu GLM Coding Plan membership or BigModel account who need to analyze large codebases, process long documents, or perform intensive code generation.
 
-## Installation
+## Key Features
 
-Install a reviewed commit into a DeepSeek Harness profile. The repository carries a `dsh.bundle` patch and prebuilt runtime files, so Git installation needs no package build permission:
+- **Unlocks 1M Context Window**: Directly select `glm-5.3` in the model selector, featuring a 1,000,000-token context limit and 128K max output capacity.
+- **Tailored for Coding Plan**: Integrates seamlessly with Zhipu AI's developer-focused Coding PaaS endpoint (`https://api.z.ai/api/coding/paas/v4/models`).
+- **Live Reconciled with Verified Exceptions**: Combines live endpoint discovery while maintaining verified support for `glm-5.3`.
+- **Secure Credential Isolation**: Coding Plan keys remain inside the Harness host credential store; the plugin receives only sanitized model metadata.
+
+## Installation and Quick Start
+
+Install a reviewed revision into a DeepSeek Harness profile. The repository includes a `dsh.bundle` patch and prebuilt runtime artifacts so no local build steps are required:
 
 ```sh
 dsh plugin --profile <profile> add github:OpenSaozi/deepseek-harness-bigmodel-model-catalog#<commit-sha>
 ```
 
-The installed bundle contributes the catalog row below; the profile's base bundle already supplies `llm-pi-ai`:
+The installed bundle contributes the following Cordis configuration (the base bundle already provides `llm-pi-ai`):
 
 ```yaml
 - id: model-catalog-bigmodel
   name: '@deepseek-ai/dsh-model-catalog-bigmodel'
 ```
 
-Inference still uses the ordinary pi-ai `zai` route. This plugin owns only the model catalog and availability reconciliation.
+Configuration note: Inference continues through the standard `zai` route in `@deepseek-ai/dsh-llm-pi-ai`; this plugin manages catalog availability and metadata.
 
 ## Contributing
 
-Please attach provider evidence for every catalog change: the exact model id, protocol, context/output capacity, reasoning behavior, and a successful direct request where applicable. Do not infer capability metadata from the `/models` response alone.
+Please attach provider evidence for every catalog change: exact model ID, protocol, context/output capacity, reasoning behavior, and direct request verification where applicable. Update both README languages and run package tests in a matching DeepSeek Harness checkout.
 
 ## License and Disclaimer
 
-MIT. This community integration is not affiliated with or endorsed by Zhipu AI, BigModel, DeepSeek, or pi-ai.
+MIT License. This community integration is not affiliated with or endorsed by Zhipu AI, BigModel, DeepSeek, or pi-ai.
 
 ## Model Experience
 
-### Catalog selection
+### Catalog Selection
 
 #### What the model sees
 
