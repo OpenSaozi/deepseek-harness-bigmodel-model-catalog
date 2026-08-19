@@ -1,63 +1,63 @@
 # DSH Plugin: LLM Provider - BigModel GLM
 
-English | [中文](README.zh.md)
+中文 | [English](README.en.md)
 
-Allows connecting to the **Zhipu AI BigModel / GLM** Coding Plan as an LLM Provider, enabling [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) to utilize the dedicated Coding Plan route and unlocking the verified **1M-token context model `glm-5.3`** (along with `glm-4.5`, `glm-4.6`, and `glm-5`).
+允许接入 **智谱 AI BigModel / GLM** 的 Coding Plan 作为 LLM Provider，让 [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness) 可以直接使用 Coding Plan 编程通道，并特别解锁官方列表未开放、但经真实验证可用的 **100 万超长上下文强力模型 `glm-5.3`**（同时支持 `glm-4.5`/`4.6`/`5`）。
 
-## Target Audience and Use Cases
+## 适用人群与场景
 
-Designed for developers with a Zhipu GLM Coding Plan membership or BigModel account who need to analyze large codebases, process long documents, or perform intensive code generation.
+适合拥有智谱 GLM Coding Plan 会员或 BigModel 开发者账号，需要处理超大代码库、长篇文档或进行高强度代码生成与重构的开发者。
 
-## Key Features
+## 核心特性
 
-- **Unlocks 1M Context Window**: Directly select `glm-5.3` in the model selector, featuring a 1,000,000-token context limit and 128K max output capacity.
-- **Tailored for Coding Plan**: Integrates seamlessly with Zhipu AI's developer-focused Coding PaaS endpoint (`https://api.z.ai/api/coding/paas/v4/models`).
-- **Live Reconciled with Verified Exceptions**: Combines live endpoint discovery while maintaining verified support for `glm-5.3`.
-- **Secure Credential Isolation**: Coding Plan keys remain inside the Harness host credential store; the plugin receives only sanitized model metadata.
+- **解锁 1M 上下文超长窗口**：直接在下拉列表选用 `glm-5.3`，拥有 100 万 token 上下文与 12.8 万 token 单次输出容量。
+- **专为 Coding Plan 优化**：完美对接智谱为程序员定制的 Coding PaaS 接口（`https://api.z.ai/api/coding/paas/v4/models`）。
+- **实时核对与验证异常保留**：结合官方端点实时可用性响应，同时保留经过真实验证的 `glm-5.3` 特别支持。
+- **安全凭据隔离**：Coding Plan Key 留存在 Harness 内部，插件仅接收脱敏后的模型元数据。
 
-## Installation and Quick Start
+## 极简安装与使用
 
-Install a reviewed revision into a DeepSeek Harness profile. The repository includes a `dsh.bundle` patch and prebuilt runtime artifacts so no local build steps are required:
+请把经过评审的提交安装进指定的 DeepSeek Harness profile。仓库携带 `dsh.bundle` 配置和预构建运行文件，通过 Git 安装无需在本地执行构建：
 
 ```sh
-dsh plugin --profile <profile> add github:OpenSaozi/deepseek-harness-bigmodel-model-catalog#<commit-sha>
+dsh plugin --profile <profile> add github:OpenSaozi/dsh-bigmodel-catalog#<commit-sha>
 ```
 
-The installed bundle contributes the following Cordis configuration (the base bundle already provides `llm-pi-ai`):
+安装后，插件会自动在 Cordis 配置中注入以下内容（profile 基础 bundle 已提供 `llm-pi-ai` 路由）：
 
 ```yaml
 - id: model-catalog-bigmodel
   name: '@deepseek-ai/dsh-model-catalog-bigmodel'
 ```
 
-Configuration note: Inference continues through the standard `zai` route in `@deepseek-ai/dsh-llm-pi-ai`; this plugin manages catalog availability and metadata.
+配置说明：实际推理走 pi-ai 的标准 `zai` 路由。本插件只负责模型清单与可用性核对。
 
-## Contributing
+## 参与贡献
 
-Please attach provider evidence for every catalog change: exact model ID, protocol, context/output capacity, reasoning behavior, and direct request verification where applicable. Update both README languages and run package tests in a matching DeepSeek Harness checkout.
+每次修改清单时，请附上供应商证据：准确模型 id、协议、上下文和输出容量、推理行为，并在适用时提供直接请求成功的结果。请同时更新中英文 README，并在版本匹配的 DeepSeek Harness 工作区中运行包测试。
 
-## License and Disclaimer
+## 许可证与免责声明
 
-MIT License. This community integration is not affiliated with or endorsed by Zhipu AI, BigModel, DeepSeek, or pi-ai.
+采用 MIT 许可证。本社区集成与智谱 AI、BigModel、DeepSeek 或 pi-ai 不存在隶属关系，也未获得这些项目的背书。
 
-## Model Experience
+## 模型体验
 
-### Catalog Selection
+### 清单选择
 
-#### What the model sees
+#### 模型看到的内容
 
-No package-owned text. The plugin only controls which BigModel descriptor, such as `glm-5.3`, the existing pi-ai adapter may select; the adapter owns request conversion.
+没有本包自带的文本。插件只决定现有 pi-ai 适配器可以选择哪个 BigModel 模型描述，例如 `glm-5.3`；请求转换由适配器负责。
 
-#### Token effect
+#### Token 影响
 
-No direct token effect. Tokenization and context use remain properties of the selected model and pi-ai's z.ai-compatible request implementation.
+没有直接 Token 影响。分词和上下文占用仍由所选模型及 pi-ai 的 z.ai 兼容请求实现决定。
 
-#### KV Cache effect
+#### KV Cache 影响
 
-No direct effect. Selecting a different model may change provider-side cache eligibility, but this plugin adds no request content.
+没有直接影响。切换模型可能改变供应商端缓存的适用性，但本插件不会增加请求内容。
 
-## Known Limitations and Deferred Work
+## 已知限制与暂缓事项
 
-- Refresh runs on mount and after route-setting or managed-credential changes. Failure keeps the maintained catalog and logs the error.
-- The Coding Plan Models endpoint currently omits a directly callable `glm-5.3`; that exact id is an explicit verified exception.
-- The endpoint supplies ids, not complete capability metadata. Context and output capacities therefore come from the reviewed descriptor table and remain pinned by package tests.
+- 插件挂载、路由设置变化或受管凭据变化时会刷新。刷新失败时会保留代码维护的清单并记录错误。
+- Coding Plan 的 Models 接口目前没有列出可直接调用的 `glm-5.3`；这个准确 id 是明确记录的真实验证例外。
+- 接口只给出 id，没有完整能力元数据。上下文和输出容量因此来自已审核的描述表，并由包测试锁定。

@@ -18,10 +18,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog.git"
+    "url": "git+https://github.com/OpenSaozi/dsh-bigmodel-catalog.git"
   },
-  "homepage": "https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog#readme",
-  "bugs": { "url": "https://github.com/OpenSaozi/deepseek-harness-bigmodel-model-catalog/issues" },
+  "homepage": "https://github.com/OpenSaozi/dsh-bigmodel-catalog#readme",
+  "bugs": { "url": "https://github.com/OpenSaozi/dsh-bigmodel-catalog/issues" },
   "keywords": [
     "deepseek",
     "deepseek-harness",

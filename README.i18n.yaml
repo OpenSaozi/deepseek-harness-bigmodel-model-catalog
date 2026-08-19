@@ -1,6 +1,4 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write packages/llm/model-catalog-bigmodel/README.md
-README.md: 3795610c67ebcf1a4f935f80312e49aeca71e5fa
-README.zh.md: 2289ca9cbdc13a9e0647d28d1796e6144be01cbc
+# Standalone plugin README pair: README.md is Chinese (GitHub default),
+# README.en.md is English. Both languages carry equal authority.
+README.md: 2731c65a9433b33ee64205e264097ef5da6f2eef
+README.en.md: 1e0d9193d0e0fbbcfc7ab24ff5de6b0ccc9ca735
