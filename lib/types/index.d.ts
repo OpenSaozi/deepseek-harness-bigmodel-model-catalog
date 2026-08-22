@@ -1,5 +1,5 @@
 /** BigModel Coding Plan provider route backed by pi-ai message conversion. */
-import type { Api, Model } from '@earendil-works/pi-ai';
+import { type Api, type Model } from '@earendil-works/pi-ai';
 import type { Context } from '@deepseek-ai/cordis';
 import z from '@deepseek-ai/schemastery';
 export declare const name = "model-catalog-bigmodel";
@@ -20,6 +20,10 @@ export interface Config {
      * session keeps completing requests instead of being refused for size.
      */
     maxRequestImageBytes?: number;
+    /** Total-pixel budget for each deterministic inline request version. */
+    requestImagePixelBudget?: number;
+    /** Raw encoded-byte cap for each deterministic inline request version. */
+    requestImageMaxBytes?: number;
 }
 /** Schemastery validator for the independent BigModel route configuration. */
 export declare const Config: z<Config>;
