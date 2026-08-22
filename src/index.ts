@@ -19,6 +19,7 @@ const DEFAULT_API_KEY_ENV = 'BIGMODEL_API_KEY'
 const DEFAULT_BASE_URL = 'https://open.bigmodel.cn/api/coding/paas/v4'
 const DEFAULT_DISPLAY_NAME = 'BigModel'
 const DEFAULT_STREAM_IDLE_TIMEOUT_MS = 300_000
+const DEFAULT_MAX_REQUEST_IMAGE_BYTES = 20 * 1024 * 1024
 const ZERO_COST = { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 } as const
 const COMPAT: OpenAICompletionsCompat = {
   supportsStore: false,
@@ -38,6 +39,12 @@ export interface Config {
   displayName?: string
   /** Maximum provider idle time while one stream read is outstanding. */
   streamIdleTimeoutMs?: number
+  /**
+   * Base64 image payload bound for one request. Older images become text
+   * placeholders once a session's accumulated images exceed it, so a long
+   * session keeps completing requests instead of being refused for size.
+   */
+  maxRequestImageBytes?: number
 }
 
 /** Schemastery validator for the independent BigModel route configuration. */
@@ -46,6 +53,7 @@ export const Config: z<Config> = z.object({
   baseURL: z.string().default(DEFAULT_BASE_URL),
   displayName: z.string().default(DEFAULT_DISPLAY_NAME),
   streamIdleTimeoutMs: z.number().min(Number.MIN_VALUE).max(MAX_TIMER_DELAY_MS).default(DEFAULT_STREAM_IDLE_TIMEOUT_MS),
+  maxRequestImageBytes: z.number().step(1).min(1).default(DEFAULT_MAX_REQUEST_IMAGE_BYTES),
 })
 
 interface ResolvedConfig {
@@ -53,12 +61,14 @@ interface ResolvedConfig {
   readonly baseURL: string
   readonly displayName: string
   readonly streamIdleTimeoutMs: number
+  readonly maxRequestImageBytes: number
 }
 
 function resolveConfig(config: Config): ResolvedConfig {
   const baseURL = config.baseURL ?? DEFAULT_BASE_URL
   const displayName = config.displayName ?? DEFAULT_DISPLAY_NAME
   const streamIdleTimeoutMs = config.streamIdleTimeoutMs ?? DEFAULT_STREAM_IDLE_TIMEOUT_MS
+  const maxRequestImageBytes = config.maxRequestImageBytes ?? DEFAULT_MAX_REQUEST_IMAGE_BYTES
   if (baseURL.length === 0) throw new Error('model-catalog-bigmodel: baseURL must not be empty')
   if (displayName.length === 0) throw new Error('model-catalog-bigmodel: displayName must not be empty')
   if (!Number.isFinite(streamIdleTimeoutMs)
@@ -68,11 +78,15 @@ function resolveConfig(config: Config): ResolvedConfig {
       `model-catalog-bigmodel: streamIdleTimeoutMs must be a positive finite number no greater than ${MAX_TIMER_DELAY_MS}`,
     )
   }
+  if (!Number.isInteger(maxRequestImageBytes) || maxRequestImageBytes <= 0) {
+    throw new Error('model-catalog-bigmodel: maxRequestImageBytes must be a positive integer')
+  }
   return {
     apiKeyEnv: credentialRef(config.apiKeyEnv ?? DEFAULT_API_KEY_ENV),
     baseURL,
     displayName,
     streamIdleTimeoutMs,
+    maxRequestImageBytes,
   }
 }
 
@@ -174,6 +188,7 @@ function profileFor(
     displayName: config.displayName,
     apiKeyEnv: config.apiKeyEnv,
     streamIdleTimeoutMs: config.streamIdleTimeoutMs,
+    maxRequestImageBytes: config.maxRequestImageBytes,
     retryPolicy: resolveRetryPolicy(undefined, 'model-catalog-bigmodel: retryPolicy'),
     configuredMaxTokens: new Map(),
     piProvider: providerFor(config, models),
