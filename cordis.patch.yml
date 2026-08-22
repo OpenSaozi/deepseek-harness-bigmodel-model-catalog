@@ -1,3 +1,7 @@
 - insert:
     - id: model-catalog-bigmodel
       name: '@deepseek-ai/dsh-model-catalog-bigmodel'
+      config:
+        apiKeyEnv: BIGMODEL_API_KEY
+        baseURL: https://open.bigmodel.cn/api/coding/paas/v4
+        displayName: BigModel

@@ -1,9 +1,22 @@
-/** BigModel Coding Plan model-catalog plugin for the pi-ai adapter. */
+/** BigModel Coding Plan provider route backed by pi-ai message conversion. */
 import type { Api, Model } from '@earendil-works/pi-ai';
 import type { Context } from '@deepseek-ai/cordis';
-import type { PiAiModelCatalog } from '@deepseek-ai/dsh-llm-pi-ai';
+import z from '@deepseek-ai/schemastery';
 export declare const name = "model-catalog-bigmodel";
 export declare const inject: string[];
+/** Deployment settings for the independent `zai` route. */
+export interface Config {
+    /** Credential reference resolved for every request. */
+    apiKeyEnv?: string;
+    /** BigModel Coding Plan API base URL. */
+    baseURL?: string;
+    /** Provider label shown in model selectors. */
+    displayName?: string;
+    /** Maximum provider idle time while one stream read is outstanding. */
+    streamIdleTimeoutMs?: number;
+}
+/** Schemastery validator for the independent BigModel route configuration. */
+export declare const Config: z<Config>;
 /** Maintained descriptors plus models live-verified ahead of pi-ai's catalog. */
 export declare const maintainedModels: readonly Model<Api>[];
 /**
@@ -14,12 +27,14 @@ export declare const maintainedModels: readonly Model<Api>[];
 export declare function parseModelIds(payload: unknown): string[];
 /**
  * Reconcile the live Coding Plan list with direct-call verified additions.
- * @param payload - credential-free provider response body.
+ * @param payload - provider response body.
  * @returns maintained descriptors currently reported or directly verified.
  */
 export declare function discoverModels(payload: unknown): readonly Model<Api>[];
-/** Register the maintained list immediately, then reconcile it with live availability. */
-export declare function apply(ctx: Context & {
-    piAiModelCatalog: PiAiModelCatalog;
-}): void;
+/**
+ * Register and live-filter the independent BigModel provider route.
+ * @param ctx - Cordis context providing LLM and credential services.
+ * @param rawConfig - validated plugin configuration.
+ */
+export declare function apply(ctx: Context, rawConfig: Config): void;
 //# sourceMappingURL=index.d.ts.map

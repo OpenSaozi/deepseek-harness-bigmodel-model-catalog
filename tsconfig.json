@@ -4,8 +4,12 @@
   "include": ["src"],
   "references": [
     { "path": "../../../vendor/cosmokit" },
+    { "path": "../../../vendor/schemastery" },
     { "path": "../../../vendor/cordis" },
+    { "path": "../../credentials/credentials" },
+    { "path": "../llm" },
     { "path": "../llm-pi-ai" },
+    { "path": "../../util/timeout" },
     { "path": "../../runtime-diagnostics/invariants" }
   ]
 }

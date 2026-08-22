@@ -1,4 +1,4 @@
-/** Package-owned invariant companion for the BigModel catalog. */
+/** Package-owned invariant companion for the BigModel provider route. */
 import type { Context } from '@deepseek-ai/cordis';
 export declare const name = "model-catalog-bigmodel-invariant";
 export declare const inject: string[];
